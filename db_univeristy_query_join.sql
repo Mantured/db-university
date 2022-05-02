@@ -59,10 +59,12 @@
     Click on edit button to change the values & remove ONLY_FULL_GROUP_BY & click on save */
 
     SELECT CONCAT(`students`.`surname`, " ", `students`.`name`) AS `student`, `courses`.`name` AS `course_name`, 
-    COUNT(`exam_student`.`vote`) AS `attempt` 
+    COUNT(`exam_student`.`vote`) AS `attempt`,
+    MAX(`exam_student`.`vote`) AS `max_vote`
     FROM `students`
     JOIN `exam_student` ON `students`.`id` = `exam_student`.`student_id`
     JOIN `exams` ON `exams`.`id` = `exam_student`.`exam_id`
     JOIN `courses` ON `courses`.`id` = `exams`.`course_id`
-    WHERE  `exam_student`.`vote` < 18
-    GROUP BY `exams`.`id`;
+    -- WHERE  `exam_student`.`vote` <= 18
+    GROUP BY `exams`.`id`
+    HAVING `voto_massimo` >= 18;
